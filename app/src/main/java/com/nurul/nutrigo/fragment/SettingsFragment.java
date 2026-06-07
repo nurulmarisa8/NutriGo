@@ -33,6 +33,7 @@ public class SettingsFragment extends Fragment {
 
         prefs = requireActivity().getSharedPreferences("nutrigo_prefs", Context.MODE_PRIVATE);
 
+        // --- Dark Mode ---
         boolean isDark = prefs.getBoolean("dark_mode", false);
         binding.switchDarkMode.setChecked(isDark);
         updateLabel(isDark);
@@ -41,14 +42,54 @@ public class SettingsFragment extends Fragment {
             // Persist to SharedPreferences
             prefs.edit().putBoolean("dark_mode", isChecked).apply();
 
-            // Apply night mode
+            // Apply night mode (automatically recreates if necessary)
             AppCompatDelegate.setDefaultNightMode(
                     isChecked ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO
             );
             updateLabel(isChecked);
+        });
 
-            // Recreate to fully apply theme
-            requireActivity().recreate();
+        // --- Calorie Target ---
+        int currentCalorieGoal = prefs.getInt("calorie_goal", 2000);
+        binding.etCalorieTarget.setText(String.valueOf(currentCalorieGoal));
+
+        binding.btnSaveCalorie.setOnClickListener(v -> {
+            String input = binding.etCalorieTarget.getText().toString().trim();
+            if (!input.isEmpty()) {
+                try {
+                    int newGoal = Integer.parseInt(input);
+                    if (newGoal > 0) {
+                        prefs.edit().putInt("calorie_goal", newGoal).apply();
+                        android.widget.Toast.makeText(getContext(), "Target kalori disimpan: " + newGoal + " kcal", android.widget.Toast.LENGTH_SHORT).show();
+                        
+                        // Clear focus and hide keyboard
+                        binding.etCalorieTarget.clearFocus();
+                        android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        if (imm != null) imm.hideSoftInputFromWindow(binding.etCalorieTarget.getWindowToken(), 0);
+                    } else {
+                        binding.etCalorieTarget.setError("Masukkan angka yang valid");
+                    }
+                } catch (NumberFormatException e) {
+                    binding.etCalorieTarget.setError("Masukkan angka yang valid");
+                }
+            } else {
+                binding.etCalorieTarget.setError("Tidak boleh kosong");
+            }
+        });
+
+        // --- Calorie Default Reset ---
+        binding.btnResetDefault.setOnClickListener(v -> {
+            prefs.edit().putInt("calorie_goal", 2000).apply();
+            binding.etCalorieTarget.setText("2000");
+            android.widget.Toast.makeText(getContext(), "Target kalori dikembalikan ke default (2000 kcal)", android.widget.Toast.LENGTH_SHORT).show();
+            binding.etCalorieTarget.clearFocus();
+            android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            if (imm != null) imm.hideSoftInputFromWindow(binding.etCalorieTarget.getWindowToken(), 0);
+        });
+
+        // --- Back to Home ---
+        binding.btnExitApp.setOnClickListener(v -> {
+            requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
     }
 

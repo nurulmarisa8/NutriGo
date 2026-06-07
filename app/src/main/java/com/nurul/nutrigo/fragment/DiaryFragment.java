@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.nurul.nutrigo.R;
 import com.nurul.nutrigo.adapter.FoodDiaryAdapter;
 import com.nurul.nutrigo.data.local.AppDatabase;
 import com.nurul.nutrigo.data.model.FoodEntry;
@@ -18,11 +19,14 @@ import com.nurul.nutrigo.databinding.FragmentDiaryBinding;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import android.content.Context;
+import android.content.SharedPreferences;
 
 public class DiaryFragment extends Fragment {
 
@@ -30,8 +34,9 @@ public class DiaryFragment extends Fragment {
     private FoodDiaryAdapter adapter;
     private ExecutorService executor;
     private Handler mainHandler;
+    private Calendar currentDate;
+    private double calorieGoal = 2000.0;
 
-    private static final double CALORIE_GOAL = 2000.0;
     private static final double PROTEIN_GOAL = 120.0;
     private static final double CARBS_GOAL   = 220.0;
     private static final double FAT_GOAL     = 65.0;
@@ -50,15 +55,47 @@ public class DiaryFragment extends Fragment {
 
         executor    = Executors.newSingleThreadExecutor();
         mainHandler = new Handler(Looper.getMainLooper());
+        currentDate = Calendar.getInstance();
+
+        SharedPreferences prefs = requireActivity().getSharedPreferences("nutrigo_prefs", Context.MODE_PRIVATE);
+        calorieGoal = prefs.getInt("calorie_goal", 2000);
 
         setupDate();
         setupRecyclerView();
         loadDiaryData();
+
+        binding.btnPrevDate.setOnClickListener(v -> {
+            currentDate.add(Calendar.DAY_OF_YEAR, -1);
+            setupDate();
+            loadDiaryData();
+        });
+
+        binding.btnNextDate.setOnClickListener(v -> {
+            currentDate.add(Calendar.DAY_OF_YEAR, 1);
+            setupDate();
+            loadDiaryData();
+        });
+
+        binding.tvDate.setOnClickListener(v -> {
+            new android.app.DatePickerDialog(requireContext(), (view1, year, month, dayOfMonth) -> {
+                currentDate.set(Calendar.YEAR, year);
+                currentDate.set(Calendar.MONTH, month);
+                currentDate.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                setupDate();
+                loadDiaryData();
+            }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH)).show();
+        });
     }
 
     private void setupDate() {
         SimpleDateFormat fmt = new SimpleDateFormat("EEEE, MMM dd", Locale.getDefault());
-        binding.tvDate.setText(fmt.format(new Date()));
+        Calendar today = Calendar.getInstance();
+        if (currentDate.get(Calendar.YEAR) == today.get(Calendar.YEAR) &&
+            currentDate.get(Calendar.DAY_OF_YEAR) == today.get(Calendar.DAY_OF_YEAR)) {
+            binding.tvDate.setText("Today");
+        } else {
+            binding.tvDate.setText(fmt.format(currentDate.getTime()));
+        }
     }
 
     private void setupRecyclerView() {
@@ -68,11 +105,15 @@ public class DiaryFragment extends Fragment {
 
     /** Load today's diary from Room on a background thread, then update UI on main thread */
     private void loadDiaryData() {
-        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String targetDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate.getTime());
+        
+        // Save targetDate to SharedPreferences so DetailActivity can use it when saving new food
+        requireActivity().getSharedPreferences("nutrigo_prefs", Context.MODE_PRIVATE)
+            .edit().putString("selected_diary_date", targetDate).apply();
 
         executor.execute(() -> {
             List<FoodEntry> entries = AppDatabase.getInstance(requireContext())
-                    .foodEntryDao().getFoodsByDate(today);
+                    .foodEntryDao().getFoodsByDate(targetDate);
 
             double totalCal  = 0, totalProt = 0, totalCarbs = 0, totalFat = 0;
             for (FoodEntry e : entries) {
@@ -97,10 +138,19 @@ public class DiaryFragment extends Fragment {
                           List<FoodEntry> entries) {
         // Calorie ring
         binding.tvCaloriesEaten.setText(String.valueOf((int) cal));
-        binding.tvCaloriesGoal.setText("/ " + (int) CALORIE_GOAL);
-        binding.progressCalories.setProgress((int) Math.min((cal / CALORIE_GOAL) * 100, 100));
-        double remaining = Math.max(0, CALORIE_GOAL - cal);
-        binding.tvRemainingBudget.setText((int) remaining + " kcal");
+        binding.tvCaloriesGoal.setText("/ " + (int) calorieGoal);
+        binding.progressCalories.setProgress((int) Math.min((cal / calorieGoal) * 100, 100));
+        
+        double remaining = calorieGoal - cal;
+        if (remaining < 0) {
+            binding.tvRemainingBudget.setText((int) Math.abs(remaining) + " kcal over");
+            binding.tvRemainingBudget.setTextColor(getResources().getColor(R.color.error_red, null));
+            binding.progressCalories.setIndicatorColor(getResources().getColor(R.color.error_red, null));
+        } else {
+            binding.tvRemainingBudget.setText((int) remaining + " kcal");
+            binding.tvRemainingBudget.setTextColor(getResources().getColor(R.color.green_primary, null));
+            binding.progressCalories.setIndicatorColor(getResources().getColor(R.color.green_primary, null));
+        }
 
         // Macro bars
         binding.tvProteinValue.setText((int) prot + "g / " + (int) PROTEIN_GOAL + "g");
@@ -127,6 +177,9 @@ public class DiaryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+        // Refresh calorie goal in case it was changed in Settings
+        SharedPreferences prefs = requireActivity().getSharedPreferences("nutrigo_prefs", Context.MODE_PRIVATE);
+        calorieGoal = prefs.getInt("calorie_goal", 2000);
         // Reload whenever user returns to this fragment
         loadDiaryData();
     }

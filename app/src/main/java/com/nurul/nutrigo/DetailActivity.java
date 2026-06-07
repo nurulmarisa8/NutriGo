@@ -161,12 +161,15 @@ public class DetailActivity extends AppCompatActivity {
         binding.btnSaveToDiary.setEnabled(false);
         binding.btnSaveToDiary.setText("Menyimpan...");
 
-        String today = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        // Get the date selected by the user in DiaryFragment (defaults to today)
+        SharedPreferences prefs = getSharedPreferences("nutrigo_prefs", MODE_PRIVATE);
+        String defaultToday = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
+        String targetDate = prefs.getString("selected_diary_date", defaultToday);
 
         FoodEntry entry = new FoodEntry(
                 recipeId, title, imageUrl,
                 calories, protein, carbs, fat,
-                mealType, today
+                mealType, targetDate
         );
 
         // ExecutorService → background thread for DB operation
