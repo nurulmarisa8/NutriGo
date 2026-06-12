@@ -4,6 +4,11 @@
     <color name="bg_light">#121212</color>
     <color name="white">#1E1E1E</color>
 
+    <!-- Greens mapped for Dark Mode (Brighter for text, darker for backgrounds) -->
+    <color name="green_primary">#66BB6A</color>
+    <color name="green_primary_dark">#388E3C</color>
+    <color name="green_extra_light">#1A2E1E</color>
+
     <!-- Text for Dark Mode -->
     <color name="text_primary">#FFFFFF</color>
     <color name="text_secondary">#AAAAAA</color>

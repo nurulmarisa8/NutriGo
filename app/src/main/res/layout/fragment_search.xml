@@ -15,8 +15,8 @@
         android:background="@color/white"
         android:paddingStart="16dp"
         android:paddingEnd="16dp"
-        android:paddingTop="12dp"
-        android:paddingBottom="0dp"
+        android:paddingTop="16dp"
+        android:paddingBottom="8dp"
         app:layout_constraintTop_toTopOf="parent">
 
         <LinearLayout

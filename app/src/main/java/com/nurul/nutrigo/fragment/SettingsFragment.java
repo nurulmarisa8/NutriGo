@@ -87,8 +87,8 @@ public class SettingsFragment extends Fragment {
             if (imm != null) imm.hideSoftInputFromWindow(binding.etCalorieTarget.getWindowToken(), 0);
         });
 
-        // --- Back to Home ---
-        binding.btnExitApp.setOnClickListener(v -> {
+        // --- Back to Home (Toolbar) ---
+        binding.btnBack.setOnClickListener(v -> {
             requireActivity().getOnBackPressedDispatcher().onBackPressed();
         });
     }
