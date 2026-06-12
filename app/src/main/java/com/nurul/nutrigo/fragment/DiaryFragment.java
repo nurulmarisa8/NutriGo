@@ -58,7 +58,13 @@ public class DiaryFragment extends Fragment {
         currentDate = Calendar.getInstance();
 
         SharedPreferences prefs = requireActivity().getSharedPreferences("nutrigo_prefs", Context.MODE_PRIVATE);
-        calorieGoal = prefs.getInt("calorie_goal", 2000);
+        String savedDate = prefs.getString("selected_diary_date", null);
+        if (savedDate != null) {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault());
+            try {
+                currentDate.setTime(sdf.parse(savedDate));
+            } catch (Exception e) {}
+        }
 
         setupDate();
         setupRecyclerView();
@@ -85,6 +91,28 @@ public class DiaryFragment extends Fragment {
                 loadDiaryData();
             }, currentDate.get(Calendar.YEAR), currentDate.get(Calendar.MONTH), currentDate.get(Calendar.DAY_OF_MONTH)).show();
         });
+
+        binding.btnSaveDailyGoal.setOnClickListener(v -> {
+            String val = binding.etDailyCalorieGoal.getText().toString().trim();
+            if (!val.isEmpty()) {
+                try {
+                    int newGoal = Integer.parseInt(val);
+                    if (newGoal > 0) {
+                        String tDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate.getTime());
+                        SharedPreferences p = requireActivity().getSharedPreferences("nutrigo_prefs", Context.MODE_PRIVATE);
+                        p.edit().putInt("calorie_goal_" + tDate, newGoal).apply();
+                        calorieGoal = newGoal;
+                        
+                        android.widget.Toast.makeText(getContext(), "Target kalori disimpan", android.widget.Toast.LENGTH_SHORT).show();
+                        binding.etDailyCalorieGoal.clearFocus();
+                        android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+                        if (imm != null) imm.hideSoftInputFromWindow(binding.etDailyCalorieGoal.getWindowToken(), 0);
+                        
+                        loadDiaryData();
+                    }
+                } catch (NumberFormatException e) { }
+            }
+        });
     }
 
     private void setupDate() {
@@ -108,8 +136,11 @@ public class DiaryFragment extends Fragment {
         String targetDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate.getTime());
         
         // Save targetDate to SharedPreferences so DetailActivity can use it when saving new food
-        requireActivity().getSharedPreferences("nutrigo_prefs", Context.MODE_PRIVATE)
-            .edit().putString("selected_diary_date", targetDate).apply();
+        SharedPreferences prefs = requireActivity().getSharedPreferences("nutrigo_prefs", Context.MODE_PRIVATE);
+        prefs.edit().putString("selected_diary_date", targetDate).apply();
+
+        calorieGoal = prefs.getInt("calorie_goal_" + targetDate, 2000);
+        binding.etDailyCalorieGoal.setText(String.valueOf((int) calorieGoal));
 
         executor.execute(() -> {
             List<FoodEntry> entries = AppDatabase.getInstance(requireContext())
@@ -177,9 +208,6 @@ public class DiaryFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-        // Refresh calorie goal in case it was changed in Settings
-        SharedPreferences prefs = requireActivity().getSharedPreferences("nutrigo_prefs", Context.MODE_PRIVATE);
-        calorieGoal = prefs.getInt("calorie_goal", 2000);
         // Reload whenever user returns to this fragment
         loadDiaryData();
     }

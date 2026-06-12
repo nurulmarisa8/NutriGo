@@ -58,10 +58,23 @@ public class SearchFragment extends Fragment {
     }
 
     private void setupChips() {
-        binding.chipAll.setOnClickListener(v -> { currentTag = "chicken and rice"; loadRecipes(currentTag); });
-        binding.chipHighProtein.setOnClickListener(v -> { currentTag = "beef steak"; loadRecipes(currentTag); });
-        binding.chipLowCarb.setOnClickListener(v -> { currentTag = "salad";       loadRecipes(currentTag); });
-        binding.chipVegan.setOnClickListener(v -> { currentTag = "tofu";        loadRecipes(currentTag); });
+        binding.chipAll.setOnClickListener(v -> { currentTag = "chicken and rice"; updateChipSelection(binding.chipAll); loadRecipes(currentTag); });
+        binding.chipHighProtein.setOnClickListener(v -> { currentTag = "beef steak"; updateChipSelection(binding.chipHighProtein); loadRecipes(currentTag); });
+        binding.chipLowCarb.setOnClickListener(v -> { currentTag = "salad"; updateChipSelection(binding.chipLowCarb); loadRecipes(currentTag); });
+        binding.chipVegan.setOnClickListener(v -> { currentTag = "tofu"; updateChipSelection(binding.chipVegan); loadRecipes(currentTag); });
+    }
+
+    private void updateChipSelection(android.widget.TextView selectedChip) {
+        android.widget.TextView[] chips = {binding.chipAll, binding.chipHighProtein, binding.chipLowCarb, binding.chipVegan};
+        for (android.widget.TextView chip : chips) {
+            if (chip == selectedChip) {
+                chip.setBackgroundResource(com.nurul.nutrigo.R.drawable.bg_chip_selected);
+                chip.setTextColor(getResources().getColor(com.nurul.nutrigo.R.color.white, null));
+            } else {
+                chip.setBackgroundResource(com.nurul.nutrigo.R.drawable.bg_chip_unselected);
+                chip.setTextColor(getResources().getColor(com.nurul.nutrigo.R.color.green_primary, null));
+            }
+        }
     }
 
     private void setupSearch() {

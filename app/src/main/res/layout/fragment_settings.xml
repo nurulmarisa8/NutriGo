@@ -206,77 +206,7 @@
         </LinearLayout>
     </androidx.cardview.widget.CardView>
 
-    <!-- Calorie Target Card -->
-    <androidx.cardview.widget.CardView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="16dp"
-        android:layout_marginBottom="24dp"
-        app:cardCornerRadius="24dp"
-        app:cardElevation="2dp"
-        app:cardBackgroundColor="@color/white">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="20dp">
-
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="Target Kalori Harian"
-                android:textSize="15sp" android:textStyle="bold"
-                android:textColor="@color/text_primary"
-                android:layout_marginBottom="8dp"/>
-
-            <TextView android:layout_width="wrap_content" android:layout_height="wrap_content"
-                android:text="Atur target asupan kalori harian Anda (kkal)."
-                android:textSize="12sp"
-                android:textColor="@color/text_secondary"
-                android:layout_marginBottom="12dp"/>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:gravity="center_vertical">
-
-                <EditText
-                    android:id="@+id/etCalorieTarget"
-                    android:layout_width="0dp"
-                    android:layout_height="44dp"
-                    android:layout_weight="1"
-                    android:inputType="number"
-                    android:hint="Contoh: 2000"
-                    android:background="@drawable/bg_search_bar"
-                    android:paddingStart="12dp"
-                    android:paddingEnd="12dp"
-                    android:layout_marginEnd="8dp"
-                    android:textColor="@color/text_primary"
-                    android:textSize="14sp"/>
-
-                <Button
-                    android:id="@+id/btnResetDefault"
-                    android:layout_width="wrap_content"
-                    android:layout_height="44dp"
-                    android:text="Default"
-                    android:backgroundTint="@color/divider"
-                    android:textColor="@color/text_primary"
-                    android:textSize="12sp"
-                    android:layout_marginEnd="4dp"
-                    android:textAllCaps="false"/>
-
-                <Button
-                    android:id="@+id/btnSaveCalorie"
-                    android:layout_width="wrap_content"
-                    android:layout_height="44dp"
-                    android:text="Simpan"
-                    android:backgroundTint="@color/green_primary"
-                    android:textColor="@color/white"
-                    android:textSize="12sp"
-                    android:textAllCaps="false"/>
-            </LinearLayout>
-        </LinearLayout>
-    </androidx.cardview.widget.CardView>
 
         </LinearLayout>
     </ScrollView>
