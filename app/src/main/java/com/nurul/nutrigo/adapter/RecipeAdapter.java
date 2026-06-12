@@ -62,7 +62,7 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             // Show just the number; unit label is in a separate TextView in the layout
             b.tvCalories.setText(String.valueOf((int) recipe.getCalories()));
             b.tvCategory.setText(buildCategory(recipe));
-            b.tvReadyTime.setText("per 100g");
+            b.tvReadyTime.setText(R.string.per_100g);
 
             // Tag chip visibility
             double protein = recipe.getProtein();
@@ -72,15 +72,15 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.ViewHolder
             b.tvTag.setVisibility(View.GONE);
             if (protein > 20) {
                 b.tvTag.setVisibility(View.VISIBLE);
-                b.tvTag.setText("Protein Tinggi");
+                b.tvTag.setText(R.string.high_protein);
                 b.tvTag.setBackgroundResource(R.drawable.bg_tag_protein);
             } else if (carbs > 50) {
                 b.tvTag.setVisibility(View.VISIBLE);
-                b.tvTag.setText("Karbo Tinggi");
+                b.tvTag.setText(R.string.high_carb);
                 b.tvTag.setBackgroundResource(R.drawable.bg_tag_carb);
             } else if (cal > 0 && cal < 100) {
                 b.tvTag.setVisibility(View.VISIBLE);
-                b.tvTag.setText("Rendah Kalori");
+                b.tvTag.setText(R.string.low_calorie);
                 b.tvTag.setBackgroundResource(R.drawable.bg_tag_default);
             }
 

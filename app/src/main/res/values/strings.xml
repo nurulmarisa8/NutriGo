@@ -11,4 +11,35 @@
     <string name="calories_eaten">Calories Eaten</string>
     <string name="macronutrients">Macronutrients</string>
     <string name="micronutrients">Micronutrients</string>
+
+    <string name="detail_nutrisi">Detail Nutrisi</string>
+    <string name="add_as">Tambahkan sebagai:</string>
+    <string name="save_short">+ Simpan</string>
+    <string name="save">Simpan</string>
+    <string name="target_kalori">Target Kalori:</string>
+    <string name="todays_meals">Today\'s Meals</string>
+    <string name="no_meals_today">Belum ada makanan hari ini</string>
+    <string name="search_hint">Cari makanan...</string>
+    <string name="no_data">Tidak Ada Data</string>
+    <string name="check_internet">Periksa koneksi internet atau coba kata kunci lain.</string>
+    <string name="try_again">Coba Lagi</string>
+    <string name="theme_setting">Tema Tampilan</string>
+    <string name="dark_mode">Mode Gelap (Dark Mode)</string>
+    <string name="dark_mode_desc">Aktifkan tema gelap untuk kenyamanan mata di malam hari.</string>
+    <string name="chip_all">Semua</string>
+    <string name="chip_breakfast">Breakfast</string>
+    <string name="chip_lunch">Lunch</string>
+    <string name="chip_snack">Snack</string>
+    <string name="saving">Menyimpan...</string>
+    <string name="saved_check">✓ Tersimpan!</string>
+    <string name="saved_success">Berhasil disimpan ke jurnal!</string>
+    <string name="target_saved">Target kalori disimpan</string>
+    <string name="high_protein">Protein Tinggi</string>
+    <string name="high_carb">Karbo Tinggi</string>
+    <string name="low_calorie">Rendah Kalori</string>
+    <string name="motto">Track Your Nutrition, Own Your Life</string>
+    <string name="per_100g">per 100g</string>
+    <string name="protein">Protein</string>
+    <string name="carbs">Carbs</string>
+    <string name="fat">Fat</string>
 </resources>

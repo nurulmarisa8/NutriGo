@@ -74,7 +74,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Target Kalori:"
+                android:text="@string/target_kalori"
                 android:textSize="14sp"
                 android:textColor="@color/text_primary"
                 android:layout_marginStart="12dp"/>
@@ -97,7 +97,7 @@
                 android:id="@+id/btnSaveDailyGoal"
                 android:layout_width="wrap_content"
                 android:layout_height="36dp"
-                android:text="Simpan"
+                android:text="@string/save"
                 android:textSize="12sp"
                 android:textColor="@color/white"
                 android:backgroundTint="@color/green_primary"/>
@@ -202,7 +202,7 @@
                     android:orientation="horizontal" android:gravity="center_vertical"
                     android:layout_marginBottom="8dp">
                     <TextView android:layout_width="60dp" android:layout_height="wrap_content"
-                        android:text="Protein" android:textSize="12sp" android:textColor="@color/text_secondary"/>
+                        android:text="@string/protein" android:textSize="12sp" android:textColor="@color/text_secondary"/>
                     <ProgressBar
                         android:id="@+id/progressProtein"
                         style="?android:attr/progressBarStyleHorizontal"
@@ -229,7 +229,7 @@
                     android:orientation="horizontal" android:gravity="center_vertical"
                     android:layout_marginBottom="8dp">
                     <TextView android:layout_width="60dp" android:layout_height="wrap_content"
-                        android:text="Carbs" android:textSize="12sp" android:textColor="@color/text_secondary"/>
+                        android:text="@string/carbs" android:textSize="12sp" android:textColor="@color/text_secondary"/>
                     <ProgressBar
                         android:id="@+id/progressCarbs"
                         style="?android:attr/progressBarStyleHorizontal"
@@ -255,7 +255,7 @@
                 <LinearLayout android:layout_width="match_parent" android:layout_height="wrap_content"
                     android:orientation="horizontal" android:gravity="center_vertical">
                     <TextView android:layout_width="60dp" android:layout_height="wrap_content"
-                        android:text="Fat" android:textSize="12sp" android:textColor="@color/text_secondary"/>
+                        android:text="@string/fat" android:textSize="12sp" android:textColor="@color/text_secondary"/>
                     <ProgressBar
                         android:id="@+id/progressFat"
                         style="?android:attr/progressBarStyleHorizontal"
@@ -292,7 +292,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Today's Meals"
+                android:text="@string/todays_meals"
                 android:textSize="17sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary" />
@@ -327,7 +327,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Belum ada makanan hari ini"
+                android:text="@string/no_meals_today"
                 android:textSize="16sp"
                 android:textStyle="bold"
                 android:textColor="@color/text_primary" />

@@ -104,7 +104,7 @@ public class DiaryFragment extends Fragment {
                         p.edit().putInt("calorie_goal_" + tDate, newGoal).apply();
                         calorieGoal = newGoal;
                         
-                        android.widget.Toast.makeText(getContext(), "Target kalori disimpan", android.widget.Toast.LENGTH_SHORT).show();
+                        android.widget.Toast.makeText(getContext(), getString(R.string.target_saved), android.widget.Toast.LENGTH_SHORT).show();
                         binding.etDailyCalorieGoal.clearFocus();
                         android.view.inputmethod.InputMethodManager imm = (android.view.inputmethod.InputMethodManager) requireContext().getSystemService(Context.INPUT_METHOD_SERVICE);
                         if (imm != null) imm.hideSoftInputFromWindow(binding.etDailyCalorieGoal.getWindowToken(), 0);

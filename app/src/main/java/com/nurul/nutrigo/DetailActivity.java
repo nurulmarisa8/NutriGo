@@ -163,7 +163,7 @@ public class DetailActivity extends AppCompatActivity {
     // Menyimpan resep ke dalam Jurnal Makanan (Database Lokal Room)
     private void saveToDiary(String mealType) {
         binding.btnSaveToDiary.setEnabled(false);
-        binding.btnSaveToDiary.setText("Menyimpan...");
+        binding.btnSaveToDiary.setText(R.string.saving);
 
         // Mengambil tanggal yang sedang aktif dipilih di halaman Diary
         SharedPreferences prefs = getSharedPreferences("nutrigo_prefs", MODE_PRIVATE);
@@ -183,7 +183,7 @@ public class DetailActivity extends AppCompatActivity {
             
             // Kembali ke Main Thread untuk mengupdate tampilan tombol dan memunculkan notifikasi (Toast)
             mainHandler.post(() -> {
-                binding.btnSaveToDiary.setText("✓ Tersimpan!");
+                binding.btnSaveToDiary.setText(R.string.saved_check);
                 Toast.makeText(DetailActivity.this,
                         title + " ditambahkan ke jurnal!", Toast.LENGTH_SHORT).show();
                 mainHandler.postDelayed(() -> {

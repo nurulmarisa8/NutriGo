@@ -60,7 +60,7 @@
                     android:id="@+id/tvMealType"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Lunch"
+                    android:text="@string/chip_lunch"
                     android:textSize="12sp"
                     android:textColor="@color/text_secondary" />
 
