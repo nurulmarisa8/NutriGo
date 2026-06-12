@@ -27,6 +27,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
+// SearchFragment adalah halaman untuk mencari data makanan dari internet menggunakan API
 public class SearchFragment extends Fragment {
 
     private FragmentSearchBinding binding;
@@ -52,16 +53,18 @@ public class SearchFragment extends Fragment {
         loadRecipes(currentTag);
     }
 
+    // Konfigurasi RecyclerView (Daftar list makanan)
     private void setupRecyclerView() {
+        // Inisialisasi adapter kosong terlebih dahulu
         adapter = new RecipeAdapter(new ArrayList<>(), recipe -> openDetail(recipe));
         binding.recyclerViewRecipes.setAdapter(adapter);
     }
 
     private void setupChips() {
         binding.chipAll.setOnClickListener(v -> { currentTag = "chicken and rice"; updateChipSelection(binding.chipAll); loadRecipes(currentTag); });
-        binding.chipHighProtein.setOnClickListener(v -> { currentTag = "beef steak"; updateChipSelection(binding.chipHighProtein); loadRecipes(currentTag); });
-        binding.chipLowCarb.setOnClickListener(v -> { currentTag = "salad"; updateChipSelection(binding.chipLowCarb); loadRecipes(currentTag); });
-        binding.chipVegan.setOnClickListener(v -> { currentTag = "tofu"; updateChipSelection(binding.chipVegan); loadRecipes(currentTag); });
+        binding.chipHighProtein.setOnClickListener(v -> { currentTag = "breakfast"; updateChipSelection(binding.chipHighProtein); loadRecipes(currentTag); });
+        binding.chipLowCarb.setOnClickListener(v -> { currentTag = "lunch"; updateChipSelection(binding.chipLowCarb); loadRecipes(currentTag); });
+        binding.chipVegan.setOnClickListener(v -> { currentTag = "snack"; updateChipSelection(binding.chipVegan); loadRecipes(currentTag); });
     }
 
     private void updateChipSelection(android.widget.TextView selectedChip) {
@@ -94,6 +97,25 @@ public class SearchFragment extends Fragment {
             }
             return false;
         });
+
+        // Menambahkan pendeteksi perubahan teks
+        // Jika pencarian dikosongkan (dihapus), maka otomatis kembali ke beranda ("Semua")
+        binding.etSearch.addTextChangedListener(new android.text.TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+            @Override
+            public void afterTextChanged(android.text.Editable s) {
+                if (s.toString().trim().isEmpty()) {
+                    currentTag = "chicken and rice"; // Default beranda
+                    updateChipSelection(binding.chipAll); // Aktifkan chip "Semua"
+                    loadRecipes(currentTag);
+                }
+            }
+        });
     }
 
     private void setupSwipeRefresh() {
@@ -102,15 +124,14 @@ public class SearchFragment extends Fragment {
         binding.swipeRefreshLayout.setOnRefreshListener(() -> loadRecipes(currentTag));
     }
 
+    // Mengambil data dari Internet (Edamam API) menggunakan library Retrofit
     private void loadRecipes(String query) {
         showOffline(false, null, null);
         if (!binding.swipeRefreshLayout.isRefreshing()) {
             binding.progressBar.setVisibility(View.VISIBLE);
         }
 
-        // Kita tidak bisa membatalkan call dengan mudah jika tipe data berubah, 
-        // jadi kita abaikan pengecekan currentCall.cancel() untuk sementara atau sesuaikan tipenya.
-
+        // Panggilan asynchronous ke API (berjalan di background thread secara otomatis oleh Retrofit)
         RetrofitClient.getInstance().getService()
                 .getNutrition("312d7695", "d6ede3c1f46f0797ff779ccf038710f5", query)
                 .enqueue(new Callback<com.nurul.nutrigo.data.model.EdamamResponse>() {
@@ -153,6 +174,7 @@ public class SearchFragment extends Fragment {
                 }
             }
 
+            // Callback saat koneksi internet gagal atau server error
             @Override
             public void onFailure(@NonNull Call<com.nurul.nutrigo.data.model.EdamamResponse> call,
                                   @NonNull Throwable t) {

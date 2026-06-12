@@ -34,12 +34,4 @@ Aplikasi ini diimplementasikan sesuai dengan kriteria spesifikasi teknis tugas f
 4. Hubungkan perangkat Android fisik atau jalankan Emulator.
 5. Klik tombol **Run (▶)** pada Android Studio untuk menginstal dan menjalankan aplikasi.
 
----
 
-## 📝 Aturan Semantic Commit
-Proyek ini menggunakan aturan penamaan *commit*:
-* `feat`: Fitur baru
-* `fix`: Perbaikan bug
-* `docs`: Pembaruan dokumentasi
-* `style`: Pembaruan terkait UI/styling
-* `refactor`: Perubahan struktur kode tanpa mengubah fungsionalitas

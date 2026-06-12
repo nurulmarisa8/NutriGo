@@ -28,6 +28,7 @@ import java.util.concurrent.Executors;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+// DiaryFragment adalah halaman jurnal makanan untuk melihat riwayat makanan yang telah disimpan lokal
 public class DiaryFragment extends Fragment {
 
     private FragmentDiaryBinding binding;
@@ -131,7 +132,7 @@ public class DiaryFragment extends Fragment {
         binding.recyclerViewMeals.setAdapter(adapter);
     }
 
-    /** Load today's diary from Room on a background thread, then update UI on main thread */
+    /** Mengambil data jurnal dari Database Room di Background Thread, lalu mengupdate UI di Main Thread */
     private void loadDiaryData() {
         String targetDate = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(currentDate.getTime());
         
@@ -139,10 +140,13 @@ public class DiaryFragment extends Fragment {
         SharedPreferences prefs = requireActivity().getSharedPreferences("nutrigo_prefs", Context.MODE_PRIVATE);
         prefs.edit().putString("selected_diary_date", targetDate).apply();
 
+        // Mengambil target kalori khusus untuk tanggal ini dari SharedPreferences
         calorieGoal = prefs.getInt("calorie_goal_" + targetDate, 2000);
         binding.etDailyCalorieGoal.setText(String.valueOf((int) calorieGoal));
 
+        // Menggunakan Executor (Background Thread) agar proses query database tidak memberatkan UI
         executor.execute(() -> {
+            // Memanggil query getFoodsByDate dari Room Database
             List<FoodEntry> entries = AppDatabase.getInstance(requireContext())
                     .foodEntryDao().getFoodsByDate(targetDate);
 
@@ -158,6 +162,7 @@ public class DiaryFragment extends Fragment {
                     fCarbs = totalCarbs, fFat = totalFat;
             final List<FoodEntry> fEntries = entries;
 
+            // Kembali ke Main Thread (Handler) untuk menampilkan hasil ke layar pengguna
             mainHandler.post(() -> {
                 if (binding == null) return;
                 updateUI(fCal, fProt, fCarbs, fFat, fEntries);

@@ -14,6 +14,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.nurul.nutrigo.databinding.ActivityMainBinding;
 
+// MainActivity adalah halaman utama yang menampung fitur-fitur aplikasi dalam bentuk Fragment
 public class MainActivity extends AppCompatActivity {
 
     private ActivityMainBinding binding;
@@ -21,7 +22,7 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        // Apply saved theme BEFORE super.onCreate
+        // 1. Terapkan tema sebelum membuat tampilan (mengambil dari SharedPreferences)
         SharedPreferences prefs = getSharedPreferences("nutrigo_prefs", MODE_PRIVATE);
         boolean isDarkMode = prefs.getBoolean("dark_mode", false);
         AppCompatDelegate.setDefaultNightMode(
@@ -45,7 +46,8 @@ public class MainActivity extends AppCompatActivity {
             return insets;
         });
 
-        // Setup Navigation Component
+        // 2. Setup Navigation Component (Mengatur navigasi tab bawah dengan fragment)
+        // Menghubungkan BottomNavigationView dengan NavController untuk perpindahan halaman otomatis
         NavHostFragment navHostFragment = (NavHostFragment) getSupportFragmentManager()
                 .findFragmentById(R.id.nav_host_fragment);
         if (navHostFragment != null) {
@@ -53,7 +55,7 @@ public class MainActivity extends AppCompatActivity {
             NavigationUI.setupWithNavController(binding.bottomNavigation, navController);
         }
 
-        // Settings gear icon → SettingsFragment
+        // 3. Tombol icon gear ditekan -> Pindah ke SettingsFragment
         binding.ivSettings.setOnClickListener(v -> {
             if (navController != null) {
                 navController.navigate(R.id.nav_settings);

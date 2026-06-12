@@ -83,6 +83,7 @@ public class DetailActivity extends AppCompatActivity {
         setupListeners();
     }
 
+    // Menerima data (Intent) yang dikirimkan dari halaman pencarian (SearchFragment)
     private void readIntent() {
         recipeId   = getIntent().getIntExtra(EXTRA_RECIPE_ID, 0);
         title      = getIntent().getStringExtra(EXTRA_TITLE);
@@ -98,8 +99,9 @@ public class DetailActivity extends AppCompatActivity {
         servings   = getIntent().getIntExtra(EXTRA_SERVINGS, 1);
     }
 
+    // Mengatur antarmuka pengguna (tampilan, gambar, dan teks kalori)
     private void setupUI() {
-        // Back button - both the button and system back work
+        // Mengatur tombol back (kembali) untuk menutup halaman detail ini
         binding.btnBack.setOnClickListener(v -> finish());
         binding.btnBack.setOnLongClickListener(v -> { finish(); return true; });
 
@@ -142,6 +144,7 @@ public class DetailActivity extends AppCompatActivity {
         binding.tvIronValue.setText((int) iron + "% DV");
     }
 
+    // Mengatur dropdown (Spinner) untuk memilih jenis makan (Breakfast, Lunch, Dinner, Snack)
     private void setupSpinner() {
         List<String> types = Arrays.asList("Breakfast", "Lunch", "Dinner", "Snack");
         ArrayAdapter<String> adapter = new ArrayAdapter<>(
@@ -157,11 +160,12 @@ public class DetailActivity extends AppCompatActivity {
         });
     }
 
+    // Menyimpan resep ke dalam Jurnal Makanan (Database Lokal Room)
     private void saveToDiary(String mealType) {
         binding.btnSaveToDiary.setEnabled(false);
         binding.btnSaveToDiary.setText("Menyimpan...");
 
-        // Get the date selected by the user in DiaryFragment (defaults to today)
+        // Mengambil tanggal yang sedang aktif dipilih di halaman Diary
         SharedPreferences prefs = getSharedPreferences("nutrigo_prefs", MODE_PRIVATE);
         String defaultToday = new SimpleDateFormat("yyyy-MM-dd", Locale.getDefault()).format(new Date());
         String targetDate = prefs.getString("selected_diary_date", defaultToday);
@@ -172,9 +176,12 @@ public class DetailActivity extends AppCompatActivity {
                 mealType, targetDate
         );
 
-        // ExecutorService → background thread for DB operation
+        // Menggunakan ExecutorService untuk menjalankan operasi Database di Background Thread
+        // (Wajib dilakukan agar UI / tampilan tidak macet/freeze)
         executor.execute(() -> {
             AppDatabase.getInstance(DetailActivity.this).foodEntryDao().insertFood(entry);
+            
+            // Kembali ke Main Thread untuk mengupdate tampilan tombol dan memunculkan notifikasi (Toast)
             mainHandler.post(() -> {
                 binding.btnSaveToDiary.setText("✓ Tersimpan!");
                 Toast.makeText(DetailActivity.this,
