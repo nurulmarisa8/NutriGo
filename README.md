@@ -24,6 +24,28 @@ Aplikasi ini diimplementasikan sesuai dengan kriteria spesifikasi teknis tugas f
 
 ---
 
+## 📸 Dokumentasi Layar Aplikasi
+
+Berikut adalah dokumentasi tampilan antarmuka (UI) dari aplikasi NutriGo:
+
+### 1. Halaman Pemuatan (Splash Screen)
+Halaman awal yang muncul (*loading screen*) saat aplikasi pertama kali dibuka sebelum masuk ke menu utama.
+![Splash Screen](readme/load.png)
+
+### 2. Halaman Beranda / Pencarian (Home)
+Fitur utama untuk mencari data gizi dan kalori makanan secara *real-time* dengan berbagai filter (Breakfast, Lunch, Snack).
+![Halaman Pencarian](readme/home.png)
+
+### 3. Halaman Jurnal Makanan (Diary)
+Tempat pengguna melihat rekap makanan yang telah disimpan beserta total kalori harian yang dikonsumsi per tanggal.
+![Halaman Jurnal](readme/dairy.png)
+
+### 4. Halaman Pengaturan (Settings)
+Halaman pengaturan preferensi pengguna, termasuk fitur untuk mengganti tema aplikasi (Terang/Gelap).
+![Pengaturan](readme/setting.png)
+
+---
+
 ## 🚀 Cara Menjalankan Aplikasi
 1. *Clone* repositori ini ke komputer lokal Anda:
    ```bash
