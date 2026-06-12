@@ -10,7 +10,7 @@ public class RetrofitClient {
     private static final String BASE_URL = "https://api.edamam.com/";
 
     private static volatile RetrofitClient instance;
-    private final SpoonacularService service;
+    private final EdamamService service;
 
     private RetrofitClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
@@ -26,7 +26,7 @@ public class RetrofitClient {
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
 
-        service = retrofit.create(SpoonacularService.class);
+        service = retrofit.create(EdamamService.class);
     }
 
     public static RetrofitClient getInstance() {
@@ -40,7 +40,7 @@ public class RetrofitClient {
         return instance;
     }
 
-    public SpoonacularService getService() {
+    public EdamamService getService() {
         return service;
     }
 }

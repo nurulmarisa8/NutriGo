@@ -425,7 +425,7 @@
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
         android:layout_marginBottom="16dp"
-        android:text="+ Simpan ke Jurnal"
+        android:text="+ Simpan"
         android:textSize="16sp"
         android:textStyle="bold"
         android:textColor="@color/white"

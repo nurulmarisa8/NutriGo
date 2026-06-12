@@ -1,44 +1,14 @@
 package com.nurul.nutrigo.data.model;
 
-import com.google.gson.annotations.SerializedName;
 
 public class Recipe {
-    @SerializedName("name")
     private String title;
-
-    @SerializedName("calories")
     private String caloriesRaw;
-
-    @SerializedName("serving_size_g")
-    private double servingSizeG;
-
-    @SerializedName("fat_total_g")
     private double fat;
-
-    @SerializedName("fat_saturated_g")
-    private double fatSaturated;
-
-    @SerializedName("protein_g")
     private String proteinRaw;
-
-    @SerializedName("sodium_mg")
     private double sodium;
-
-    @SerializedName("potassium_mg")
     private double potassium;
-
-    @SerializedName("cholesterol_mg")
-    private double cholesterol;
-
-    @SerializedName("carbohydrates_total_g")
     private double carbs;
-
-    @SerializedName("fiber_g")
-    private double fiber;
-
-    @SerializedName("sugar_g")
-    private double sugar;
-
     private String image;
 
     // ---- Getters ----

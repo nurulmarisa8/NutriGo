@@ -5,7 +5,7 @@ import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Query;
 
-public interface SpoonacularService {
+public interface EdamamService {
 
     @GET("api/food-database/v2/parser")
     Call<EdamamResponse> getNutrition(
